@@ -4,7 +4,7 @@ import sendOtp from "../utils/sendOtp.js";
 import TryCatch from "../utils/TryCatch.js";
 import jwt from "jsonwebtoken";
 
-const userLogin = TryCatch(async (req, res) => {
+export const userLogin = TryCatch(async (req, res) => {
   const { email } = req.body;
 
   const subject = "Mongo Mart otp";
@@ -30,7 +30,7 @@ const userLogin = TryCatch(async (req, res) => {
 
 
 
-const verifyUser = TryCatch(async (req, res) => {
+export const verifyUser = TryCatch(async (req, res) => {
   const { email, otp } = req.body;
 
   const haveOtp = await OTP.findOne({
@@ -67,4 +67,8 @@ const verifyUser = TryCatch(async (req, res) => {
   });
 });
 
-export { userLogin, verifyUser };
+export const myProfile = TryCatch(async(req, res) => {
+  const user = await User.findById(req.user._id)
+
+  res.send(user);
+})
