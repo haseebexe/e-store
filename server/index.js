@@ -8,6 +8,7 @@ import productRouter from "./routes/product.js";
 import cartRouter from "./routes/cart.js";
 import addressRouter from "./routes/address.js";
 import orderRouter from "./routes/order.js";
+import cors from 'cors';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ cloudinary.v2.config({
 const port = process.env.PORT;
 
 const app = express();
+app.use(cors())
 
 app.use(express.json());
 // Using routes

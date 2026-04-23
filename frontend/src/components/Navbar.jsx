@@ -2,6 +2,7 @@ import { LogIn, ShoppingCart, User } from 'lucide-react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { ModeToggle } from './mode-toggle'
 
 const Navbar = () => {
 
@@ -15,7 +16,7 @@ const logoutHandler = () => {
     <div>
         <nav className='z-50 sticky top-0 bg-background/50 border-b backdrop-blur' >
         <div className='container mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between ' >
-            <div>logo here</div>
+            <div onClick={() => navigate('/')}>logo here</div>
             <ul className='flex justify-center items-center space-x-6' >
                 <li className='cursor-pointer' onClick={() =>  navigate("/") } >Home</li>
                 <li className='cursor-pointer' onClick={() =>  navigate("/products") } >Products</li>
@@ -38,6 +39,7 @@ const logoutHandler = () => {
                             </DropdownMenuContent>
                         </DropdownMenu>
                      </li>
+                     <ModeToggle/>
             </ul>
              </div>
         </nav>
