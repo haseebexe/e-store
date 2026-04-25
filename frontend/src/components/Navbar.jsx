@@ -3,13 +3,16 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { ModeToggle } from './mode-toggle'
+import { useUserData } from '@/context/UserContext'
 
 const Navbar = () => {
 
 const navigate = useNavigate()
-const isAuth = false;
+
+const {logoutUser, isAuth } = useUserData()
+
 const logoutHandler = () => { 
-    alert("Logged out")
+   logoutUser(navigate)
  }
 
   return (

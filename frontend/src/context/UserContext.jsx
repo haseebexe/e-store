@@ -70,6 +70,8 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+
+
   async function fetchUser() {
     try {
       const { data } = await axios.get(`${server}/api/user/me`, {
@@ -87,6 +89,15 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+ function logoutUser(navigate) {
+    Cookies.set("token", null)
+    setUser([])
+    setIsAuth(false)
+    navigate('/login')
+  }
+
+
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -100,6 +111,7 @@ export const UserProvider = ({ children }) => {
         isAuth,
         loginUser,
         verifyUser,
+        logoutUser,
       }}
     >
       {children}

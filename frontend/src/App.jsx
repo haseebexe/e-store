@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import Verify from "./pages/Verify";
 import { useUserData } from "./context/UserContext";
 import Loading from "./components/Loading";
+import Cart from "./pages/Cart";
 
 function App() {
   const { isAuth, loading } = useUserData();
@@ -21,7 +22,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={isAuth ? <Home/> : <Login />}></Route>
-            <Route path="/verify" element={ isAuth ? <Home/> :<Verify />}></Route>
+            <Route path="/verify" element={ isAuth ? <Home/> : <Verify />}></Route>
+            <Route path="/cart" element={ isAuth ? <Cart/> : <Login/> }></Route>
             <Route path="/products" element={<Products />}></Route>
           </Routes>
           <Footer />

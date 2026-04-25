@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "./ui/button";
+import { BiToggleLeft } from "react-icons/bi";
 
 const Hero = ({ navigate }) => {
   return (
@@ -18,6 +19,7 @@ const Hero = ({ navigate }) => {
           <h1 className="text-4xl sm:text-6xl font-bold mb-6">
             Welcome to your Dream Shop
           </h1>
+          <BiToggleLeft/>
           <p className="text-lg sm:text-2xl mb-8">
             Discover amazing products and deals just for you.
           </p>
