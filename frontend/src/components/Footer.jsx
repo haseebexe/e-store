@@ -17,7 +17,7 @@ const Footer = () => {
   return (
     <div>
         <hr className='border border-grey-300 dark:border-grey-700' />
-        <div className="container mx-auto py-8">
+        <div className="container px-6 mx-auto py-8">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-6" >
                     <div className="mb-4 md:mb-0">
                         <h3 className="text-lg font-bold">Company Name</h3>
