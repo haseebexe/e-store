@@ -47,7 +47,7 @@ const ProductCard = ({ product, latest }) => {
                     e.preventDefault();
                     prevImage();
                   }}
-                  className="cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                  className="cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-1 lg:opacity-0 group-hover:opacity-100 transition"
                 >
                   ←
                 </button>
@@ -57,7 +57,7 @@ const ProductCard = ({ product, latest }) => {
                     e.preventDefault();
                     nextImage();
                   }}
-                  className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
+                  className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-1 lg:opacity-0 group-hover:opacity-100 transition"
                 >
                   →
                 </button>

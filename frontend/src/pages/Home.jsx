@@ -35,15 +35,17 @@ const Home = () => {
               {newProd.map((item) => (
                 <CarouselItem
                   key={item._id}
-                  className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                  className="pl-4 basis-full sm:basis-1/2 lg:basis-1/4"
                 >
-                  <ProductCard product={item} latest="yes" />
+                  <div className="h-full">
+                    <ProductCard product={item} latest="no" />
+                  </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
 
-            <CarouselPrevious className="left-2" />
-            <CarouselNext className="right-2" />
+            <CarouselPrevious className="left-2 bg-white/90 shadow-md hover:bg-white dark:bg-gray-800 dark:hover:bg-gray-700" />
+            <CarouselNext className="right-2 bg-white/90 shadow-md hover:bg-white dark:bg-gray-800 dark:hover:bg-gray-700" />
           </Carousel>
         ) : (
           <div className="flex justify-center items-center h-40">

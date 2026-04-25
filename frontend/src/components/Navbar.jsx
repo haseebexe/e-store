@@ -4,15 +4,18 @@ import { useNavigate } from 'react-router-dom'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { ModeToggle } from './mode-toggle'
 import { useUserData } from '@/context/UserContext'
+import { useCart } from '@/context/CartContext'
 
 const Navbar = () => {
 
 const navigate = useNavigate()
 
 const {logoutUser, isAuth } = useUserData()
+const { totalItems, setTotalItems } = useCart();
+
 
 const logoutHandler = () => { 
-   logoutUser(navigate)
+   logoutUser(navigate, setTotalItems)
  }
 
   return (
@@ -23,7 +26,7 @@ const logoutHandler = () => {
           <li className='cursor-pointer' onClick={() => navigate("/")}>Home</li>
           <li className='cursor-pointer' onClick={() => navigate("/products")}>Products</li>
           <li className='relative cursor-pointer' onClick={() => navigate("/cart")}><ShoppingCart/>
-            <span className='absolute -top-3 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[12px] font-bold text-white'>5</span>
+            <span className='absolute -top-3 -right-3 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[12px] font-bold text-white'>{totalItems}</span>
           </li>
           <li className='cursor-pointer'>
             <DropdownMenu>

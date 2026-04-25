@@ -10,18 +10,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUserData } from "@/context/UserContext";
-// import { useUserData } from "@/hooks/useUserData";
+import { useCart } from "@/context/CartContext";
 import { LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Verify = () => {
-  const resendOtpTimer = 10;
+  const resendOtpTimer = 90; 
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(resendOtpTimer);
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
   const { verifyUser, btnLoading, loginUser } = useUserData();
+  const {fetchCart} = useCart();
 
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const Verify = () => {
   };
 
   async function submitHandler() {
-   await verifyUser(Number(otp), navigate);
+   await verifyUser(Number(otp), navigate, fetchCart);
   }
 
   const resendOtpHandler = async () => {

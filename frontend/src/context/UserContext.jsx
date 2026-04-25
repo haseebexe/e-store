@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
   const [btnLoading, setBtnLoading] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
 
-  async function loginUser(email, navigate) {
+  async function loginUser(email, navigate, fetchCart) {
     if (!email?.trim()) {
       toast.error("Email is required");
       return;
@@ -27,7 +27,7 @@ export const UserProvider = ({ children }) => {
       });
 
       toast.success(data.message);
-      localStorage.setItem("email", email.trim());
+      localStorage.setItem("email", email.trim());      
       navigate("/verify");
     } catch (error) {
       const msg = error?.response?.data?.message || "Something went wrong";
@@ -37,7 +37,7 @@ export const UserProvider = ({ children }) => {
     }
   }
 
-  async function verifyUser(otp, navigate) {
+  async function verifyUser(otp, navigate, fetchCart) {
     if (!otp) {
       toast.error("OTP is required");
       return;
@@ -62,6 +62,7 @@ export const UserProvider = ({ children }) => {
         secure: true,
         sameSite: "strict",
       });
+      fetchCart();
     } catch (error) {
       const msg = error?.response?.data?.message || "Something went wrong";
       toast.error(msg);
@@ -89,11 +90,12 @@ export const UserProvider = ({ children }) => {
     }
   }
 
- function logoutUser(navigate) {
+ function logoutUser(navigate, setTotalItems) {
     Cookies.set("token", null)
     setUser([])
     setIsAuth(false)
     navigate('/login')
+    setTotalItems(0)
   }
 
 
