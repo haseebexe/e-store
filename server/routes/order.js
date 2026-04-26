@@ -1,6 +1,6 @@
 import express from "express";
 import { isAuth } from "../middlewares/isAuth.js";
-import { getAllOrders, getAllOrdersAdmin, getSingleOrder, getStats, newOrderCod, updateStatus } from "../controller/order.js";
+import { getAllOrders, getAllOrdersAdmin, getSingleOrder, getStats, newOrderCod, newOrderOnline, updateStatus, verifyPayment } from "../controller/order.js";
 
 const router = express.Router()
 
@@ -12,5 +12,7 @@ router.get("/order/:id", isAuth, getSingleOrder)
 router.get("/order/:id", isAuth, getSingleOrder)
 router.post("/order/:id", isAuth, updateStatus  )
 router.get("/stats", isAuth, getStats  )
+router.post("/order/new/online", isAuth, newOrderOnline);
+router.post("/order/verify/payment", isAuth, verifyPayment);
 
 export default router;

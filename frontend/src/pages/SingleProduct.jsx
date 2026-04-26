@@ -130,7 +130,50 @@ const SingleProduct = () => {
             </div>
           )}
 
-          {relatedProducts?.length > 0 && (
+<section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8" >
+{relatedProducts?.length > 0 && (
+  <div className="mt-12 md:mt-16">
+    
+    {/* HEADER */}
+    <div className="mb-6 flex items-center justify-between">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+          Related Products
+        </h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          More items you might like
+        </p>
+      </div>
+    </div>
+
+    {/* CAROUSEL (NOW SAME AS HOME) */}
+    <Carousel
+      opts={{
+        align: "start",
+        loop: false,
+      }}
+      className="w-full"
+    >
+      <CarouselContent className="-ml-4">
+        {relatedProducts.map((item) => (
+          <CarouselItem
+            key={item._id}
+            className="pl-4 basis-[85%] sm:basis-1/2 lg:basis-1/4"
+          >
+            <div className="h-full transition duration-300 hover:-translate-y-1">
+              <ProductCard product={item} latest="no" />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+
+      {/* SAME ARROWS */}
+      <CarouselPrevious className="left-2 hidden sm:flex bg-white shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700" />
+      <CarouselNext className="right-2 hidden sm:flex bg-white shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700" />
+    </Carousel>
+  </div>
+)}
+          {/* {relatedProducts?.length > 0 && (
             <div className="mt-12 md:mt-16">
               <div className="mb-4">
                 <h2 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-2xl">
@@ -165,7 +208,8 @@ const SingleProduct = () => {
                 <CarouselNext className="right-2 bg-white/90 shadow-md hover:bg-white dark:bg-gray-800 dark:hover:bg-gray-700" />
               </Carousel>
             </div>
-          )}
+          )} */}
+          </section>
         </div>
       )}
     </div>

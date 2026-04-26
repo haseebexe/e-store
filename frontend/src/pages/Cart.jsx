@@ -12,7 +12,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const { cart, subTotal, updateCart, deleteCart, totalItems, loading } =
+  const { cart, subTotal, updateCart, deleteCart, totalItems } =
     useCart();
   const navigate = useNavigate();
 
@@ -21,29 +21,31 @@ const Cart = () => {
   };
 
   const handleDeleteCart = async (id) => {
-    await deleteCart(id);
+    if (confirm("Remove this item from cart?")) {
+      await deleteCart(id);
+    }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-50 px-4 py-6 dark:bg-slate-950 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="h-8 w-40 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-          <div className="mt-6 grid gap-6 lg:grid-cols-3">
-            <div className="space-y-4 lg:col-span-2">
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="h-32 animate-pulse rounded-2xl bg-white shadow-sm dark:bg-slate-900"
-                />
-              ))}
-            </div>
-            <div className="h-64 animate-pulse rounded-2xl bg-white shadow-sm dark:bg-slate-900" />
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-screen bg-slate-50 px-4 py-6 dark:bg-slate-950 sm:px-6 lg:px-8">
+  //       <div className="mx-auto max-w-6xl">
+  //         <div className="h-8 w-40 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+  //         <div className="mt-6 grid gap-6 lg:grid-cols-3">
+  //           <div className="space-y-4 lg:col-span-2">
+  //             {[1, 2, 3].map((i) => (
+  //               <div
+  //                 key={i}
+  //                 className="h-32 animate-pulse rounded-2xl bg-white shadow-sm dark:bg-slate-900"
+  //               />
+  //             ))}
+  //           </div>
+  //           <div className="h-64 animate-pulse rounded-2xl bg-white shadow-sm dark:bg-slate-900" />
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -71,7 +73,7 @@ const Cart = () => {
               </p>
               <Button
                 className="mt-6 w-full rounded-xl py-5 text-base sm:w-auto"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/products")}
               >
                 Shop Now
               </Button>
@@ -86,8 +88,16 @@ const Cart = () => {
                 return (
                   <div
                     key={item._id}
-                    className="rounded-2xl border bg-white p-4 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:p-5"
+                    className="relative rounded-2xl border bg-white p-4 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:p-5"
                   >
+                    <button
+                      onClick={() => handleDeleteCart(item._id)}
+                      className="absolute right-3 top-3 rounded-full p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30"
+                      aria-label="Remove item"
+                    >
+                      <Trash2 className="h-4 w-4 cursor-pointer" />
+                    </button>
+
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                       <Link
                         to={`/product/${item.product._id}`}
@@ -119,12 +129,12 @@ const Cart = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-10 w-10 rounded-none rounded-l-xl"
+                              className="h-10 w-10 rounded-none rounded-l-xl cursor-pointer"
                               onClick={() =>
                                 updateCartHandler("dec", item._id)
                               }
                             >
-                              <Minus className="h-4 w-4" />
+                              <Minus className="h-4 w-4 cursor-pointer" />
                             </Button>
 
                             <span className="min-w-12 px-3 text-center text-sm font-semibold text-slate-900 dark:text-white">
@@ -134,23 +144,14 @@ const Cart = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-10 w-10 rounded-none rounded-r-xl"
+                              className="h-10 w-10 rounded-none rounded-r-xl cursor-pointer"
                               onClick={() =>
                                 updateCartHandler("inc", item._id)
                               }
                             >
-                              <Plus className="h-4 w-4" />
+                              <Plus className="h-4 w-4 " />
                             </Button>
                           </div>
-
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-10 w-10 rounded-xl text-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/30"
-                            onClick={() => handleDeleteCart(item._id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
                         </div>
                       </div>
 
@@ -168,7 +169,7 @@ const Cart = () => {
               })}
             </div>
 
-            <div className="lg:sticky lg:top-6">
+            <div className="lg:sticky lg:top-17">
               <div className="rounded-2xl border bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
                 <h2 className="text-lg font-bold text-slate-900 dark:text-white">
                   Order Summary
