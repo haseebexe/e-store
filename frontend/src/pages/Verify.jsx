@@ -7,7 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
 import { useUserData } from "@/context/UserContext";
 import { useCart } from "@/context/CartContext";
@@ -16,7 +20,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Verify = () => {
-  const resendOtpTimer = 90; 
+  const resendOtpTimer = 10; 
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(resendOtpTimer);
   const [canResend, setCanResend] = useState(false);
@@ -45,7 +49,7 @@ const Verify = () => {
   };
 
   async function submitHandler() {
-   await verifyUser(Number(otp), navigate, fetchCart);
+   await verifyUser(otp, navigate, fetchCart);
   }
 
   const resendOtpHandler = async () => {
@@ -75,14 +79,26 @@ const Verify = () => {
         </CardHeader>
 
         <CardContent className="space-y-2">
-          <div className="space-x-1">
-            <Label className="mb-2.5">Enter OTP</Label>
-            <Input
-              type="number"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-            />
-          </div>
+          <div className="space-y-3">
+  <Label>Enter OTP</Label>
+
+  <div className="flex justify-center">
+    <InputOTP
+      maxLength={6}
+      value={otp}
+      onChange={(value) => setOtp(value)}
+    >
+      <InputOTPGroup>
+        <InputOTPSlot index={0} />
+        <InputOTPSlot index={1} />
+        <InputOTPSlot index={2} />
+        <InputOTPSlot index={3} />
+        <InputOTPSlot index={4} />
+        <InputOTPSlot index={5} />
+      </InputOTPGroup>
+    </InputOTP>
+  </div>
+</div>
         </CardContent>
 
         <CardFooter>

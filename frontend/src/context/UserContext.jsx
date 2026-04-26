@@ -80,7 +80,7 @@ export const UserProvider = ({ children }) => {
           token: Cookies.get("token"),
         }
       });
-      setUser(data.user);
+      setUser(data);
       setIsAuth(true);
       setLoading(false);
     } catch (error) {
@@ -91,7 +91,7 @@ export const UserProvider = ({ children }) => {
   }
 
  function logoutUser(navigate, setTotalItems) {
-    Cookies.set("token", null)
+    Cookies.remove("token")
     setUser([])
     setIsAuth(false)
     navigate('/login')

@@ -20,11 +20,20 @@ export const AddressProvider = ({ children }) => {
   });
 
   async function fetchAddress() {
+    const token = Cookies.get("token");
+    
+    // Don't fetch if user is not authenticated
+    if (!token) {
+      setLoading(false);
+      setAddress([]);
+      return;
+    }
+
     setLoading(true);
     try {
       const { data } = await axios.get(`${server}/api/address/all`, {
         headers: {
-          token: Cookies.get("token"),
+          token: token,
         },
       });
       setAddress(data);
@@ -86,11 +95,19 @@ export const AddressProvider = ({ children }) => {
 
 
   async function fetchSingleAddress(id) {
+    const token = Cookies.get("token");
+    
+    // Don't fetch if user is not authenticated
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       const { data } = await axios.get(`${server}/api/address/${id}`, {
         headers: {
-          token: Cookies.get("token"),
+          token: token,
         },
       });
       setSelectedAddress(data);

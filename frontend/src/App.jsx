@@ -13,9 +13,15 @@ import SingleProduct from "./pages/SingleProduct";
 import Checkout from "./pages/Checkout";
 import Payment from "./pages/Payment";
 import OrderProcessing from "./pages/OrderProcessing";
+import Orders from "./pages/Orders";
+import OrderPage from "./pages/OrderPage";
+import Dashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
-  const { isAuth, loading } = useUserData();
+  const { isAuth, loading, user } = useUserData();
+
+  console.log(user)
 
   return (
     <>
@@ -32,6 +38,9 @@ function App() {
             <Route path="/checkout" element={ isAuth ? <Checkout/> : <Login/> }></Route>
             <Route path="/payment/:id" element={ isAuth ? <Payment/> : <Login/> }></Route>
             <Route path="/ordersuccess" element={ isAuth ? <OrderProcessing/> : <Login/> }></Route>
+            <Route path="/orders" element={ isAuth ? <Orders/> : <Login/> }></Route>
+            <Route path="/order/:id" element={ isAuth ? <OrderPage/> : <Login/> }></Route>
+            <Route path="/admin/dashboard" element={ isAuth && user?.role === "admin" ? <AdminDashboard/> : <Home/> }></Route>
             <Route path="*" element={ <NotFound/> }></Route>
             <Route path="/products" element={<Products />}></Route>
             <Route path="/product/:id" element={<SingleProduct/>}></Route>

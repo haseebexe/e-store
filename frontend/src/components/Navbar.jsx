@@ -21,7 +21,7 @@ import { useCart } from "@/context/CartContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { logoutUser, isAuth } = useUserData();
+  const { logoutUser, isAuth, user } = useUserData();
   const { totalItems, setTotalItems } = useCart();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -77,7 +77,7 @@ const Navbar = () => {
             )}
           </li>
 
-          {/* USER DROPDOWN */}
+      
           <DropdownMenu>
             <DropdownMenuTrigger className="outline-none">
               {isAuth ? (
@@ -100,6 +100,11 @@ const Navbar = () => {
                   <DropdownMenuItem onClick={() => navigate("/orders")}>
                     Your Orders
                   </DropdownMenuItem>
+                  {user?.role === "admin" && (
+                    <DropdownMenuItem onClick={() => navigate("/admin/dashboard")}>
+                      Dashboard
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onClick={logoutHandler}>
                     Logout
                   </DropdownMenuItem>
@@ -154,7 +159,15 @@ const Navbar = () => {
             >
               Products
             </span>
-
+   {user?.role === "admin" && (
+                       <span
+              className="cursor-pointer text-sm font-medium"   onClick={() => {
+                navigate("/admin/dashboard");
+                setMenuOpen(false);
+              }}>
+                      Dashboard
+                    </span>
+                  )}
             {!isAuth ? (
               <span
                 className="cursor-pointer text-sm font-medium"
