@@ -1,5 +1,6 @@
 import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
+import { useUserData } from "@/context/UserContext";
 import { server } from "@/main";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -10,6 +11,7 @@ const OrderPage = () => {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { user } = useUserData();
 
   const navigate = useNavigate();
 
@@ -55,6 +57,9 @@ const OrderPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black py-10 px-4">
+
+    { user._id === order.user._id || user.role === "admin" ? <>
+      <h1 className="text-3xl font-bold mb-6">Order Details</h1>
       <div className="max-w-6xl mx-auto space-y-8">
 
         {/* HEADER */}
@@ -195,6 +200,10 @@ const OrderPage = () => {
 </div>
 
       </div>
+    </> : <>
+      <p>You are not authorized to view this order.</p>
+    </> }
+
     </div>
   );
 };

@@ -12,88 +12,108 @@ const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigate = useNavigate();
-
   const { user } = useUserData();
 
-  if (user.role !== "admin") return navigate("/");
-
+if (user.role !== "admin") {
+  navigate("/");
+  return null;
+}
   const renderPageContent = () => {
     switch (selectedPage) {
       case "home":
         return <HomePage />;
-
       case "orders":
         return <OrdersPage />;
-
       case "info":
         return <InfoPage />;
-
       default:
         return <HomePage />;
     }
   };
-  return (
-    <div className="flex min-h-screen">
-      {/* sidebar */}
-      <div
-        className={`${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } fixed lg:relative lg:translate-x-0 h-full shadow-lg transition-transform duration-300 bg-background/50 border-b backdrop-blur z-50`}
-      >
-        <div className="flex flex-col h-full p-4">
-          <h1 className="text-lg font-bold mb-4">Admin Panel</h1>
-          <div className="space-y-4">
-            <Button
-              variant="ghost"
-              onClick={() => setSelectedPage("home")}
-              className={`w-full flex items-center gap-2 ${
-                selectedPage === "home" ? "bg-gray-500" : ""
-              }`}
-            >
-              <Home className="w-5 h-5" /> Home
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => setSelectedPage("orders")}
-              className={`w-full flex items-center gap-2 ${
-                selectedPage === "orders" ? "bg-gray-500" : ""
-              }`}
-            >
-              <ShoppingBag className="w-5 h-5" /> Orders
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => setSelectedPage("info")}
-              className={`w-full flex items-center gap-2 ${
-                selectedPage === "info" ? "bg-gray-500" : ""
-              }`}
-            >
-              <Info className="w-5 h-5" /> Info
-            </Button>
 
-            <Button
-              variant="ghost"
+  const navItem = (key, label, Icon) => (
+    <button
+      onClick={() => {
+        setSelectedPage(key);
+        setSidebarOpen(false);
+      }}
+      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+        ${
+          selectedPage === key
+            ? "bg-primary text-white shadow-md"
+            : "hover:bg-muted/50 text-muted-foreground"
+        }`}
+    >
+      <Icon className="w-5 h-5" />
+      <span className="font-medium">{label}</span>
+    </button>
+  );
+
+  return (
+    <div className="flex min-h-screen bg-muted/30">
+      {/* Sidebar */}
+      <div
+        className={`fixed lg:relative z-50 h-full w-64
+        bg-background/80 backdrop-blur-xl border-r shadow-lg
+        transform transition-transform duration-300
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        lg:translate-x-0`}
+      >
+        <div className="flex flex-col h-full p-5">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-xl font-bold tracking-tight">
+              Admin Panel
+            </h1>
+            <button
               className="lg:hidden"
               onClick={() => setSidebarOpen(false)}
             >
-              <X className="w-5 h-5" /> Close
-            </Button>
+              <X />
+            </button>
+          </div>
+
+          {/* Navigation */}
+          <div className="space-y-2">
+            {navItem("home", "Dashboard", Home)}
+            {navItem("orders", "Orders", ShoppingBag)}
+            {navItem("info", "Info", Info)}
+          </div>
+
+          {/* Footer */}
+          <div className="mt-auto pt-6 text-xs text-muted-foreground">
+            © 2026 Admin Panel
           </div>
         </div>
       </div>
 
+      {/* Content */}
       <div className="flex-1 flex flex-col">
-        <div className="shadow p-4 flex items-center justify-between lg:justify-end">
+        {/* Topbar */}
+        <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b px-4 py-3 flex items-center justify-between">
           <Button
             variant="outline"
             className="lg:hidden"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
+            onClick={() => setSidebarOpen(true)}
           >
             <MenuIcon className="w-5 h-5" />
           </Button>
-          <h2 className="text-lg font-bold hidden lg:block">Admin Dashoard</h2>
+
+          <h2 className="text-lg font-semibold tracking-tight">
+            {selectedPage.charAt(0).toUpperCase() + selectedPage.slice(1)}
+          </h2>
+
+          <div className="text-sm text-muted-foreground hidden sm:block">
+            Welcome, Admin
+          </div>
         </div>
-        <div className="p-4">{renderPageContent()}</div>
+
+        {/* Page Content */}
+        <div className="p-4 sm:p-6 lg:p-8">
+          <div className="bg-background rounded-2xl shadow-sm border p-4 sm:p-6">
+            {renderPageContent()}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -30,9 +30,9 @@ const OrdersPage = () => {
       });
 
       setOrders(data);
-      setLoading(false);
     } catch (error) {
       console.log(error);
+    } finally {
       setLoading(false);
     }
   };
@@ -42,7 +42,6 @@ const OrdersPage = () => {
   }, []);
 
   const updateOrderStatus = async (orderId, status) => {
-    setLoading(true);
     try {
       const { data } = await axios.post(
         `${server}/api/order/${orderId}`,
@@ -56,89 +55,127 @@ const OrdersPage = () => {
 
       toast.success(data.message);
       fetchOrders();
-      setLoading(false);
     } catch (error) {
-      toast.error(error.response.data.message);
-      setLoading(false);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
   const filteredOrders = orders.filter(
     (order) =>
-      order.user.email.toLowerCase().includes(search.toLocaleLowerCase()) ||
-      order._id.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+      order.user.email.toLowerCase().includes(search.toLowerCase()) ||
+      order._id.toLowerCase().includes(search.toLowerCase())
   );
+
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case "Pending":
+        return "bg-yellow-100 text-yellow-700";
+      case "Shipped":
+        return "bg-blue-100 text-blue-700";
+      case "Delivered":
+        return "bg-green-100 text-green-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Manage Orders</h1>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <h1 className="text-2xl font-bold tracking-tight">
+          Manage Orders
+        </h1>
 
-      <Input
-        placeholder="search by email or order id"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full md:w-1/2"
-      />
+        <Input
+          placeholder="Search by email or order ID..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full md:w-80"
+        />
+      </div>
 
-      {loading ? (
-        <Loading />
-      ) : filteredOrders.length > 0 ? (
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Order Id</TableHead>
-                <TableHead>User Email</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredOrders.map((order) => (
-                <TableRow key={order._id}>
-                  <TableCell>
-                    <Link to={`/order/${order._id}`}>{order._id}</Link>
-                  </TableCell>
-                  <TableCell>{order.user.email}</TableCell>
-                  <TableCell>{order.subTotal}</TableCell>
-                  <TableCell>
-                    <span
-                      className={`px-2 py-1 rounded text-white ${
-                        order.status === "Pending"
-                          ? "bg-yellow-500"
-                          : order.status === "Shipped"
-                          ? "bg-blue-500"
-                          : "bg-green-500"
-                      }`}
-                    >
-                      {order.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    {moment(order.createdAt).format("DD MM YYYY")}
-                  </TableCell>
-                  <TableCell>
-                    <select
-                      value={order.status}
-                      className="w-[150px] px-3 py-2 border rounded-md"
-                      onChange={(e) =>
-                        updateOrderStatus(order._id, e.target.value)
-                      }
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value={"Shipped"}>Shipped</option>
-                      <option value={"Delivered"}>Delivered</option>
-                    </select>
-                  </TableCell>
+      {/* Content Card */}
+      <div className="bg-background border rounded-2xl shadow-sm">
+        {loading ? (
+          <div className="p-10">
+            <Loading />
+          </div>
+        ) : filteredOrders.length > 0 ? (
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/40">
+                  <TableHead>Order ID</TableHead>
+                  <TableHead>User</TableHead>
+                  <TableHead>Total</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="text-right">Action</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      ) : (
-        <p>No Orders</p>
-      )}
+              </TableHeader>
+
+              <TableBody>
+                {filteredOrders.map((order) => (
+                  <TableRow
+                    key={order._id}
+                    className="hover:bg-muted/30 transition"
+                  >
+                    <TableCell className="font-medium">
+                      <Link
+                        to={`/order/${order._id}`}
+                        className="text-primary hover:underline"
+                      >
+                        #{order._id.slice(-6)}
+                      </Link>
+                    </TableCell>
+
+                    <TableCell className="text-sm text-muted-foreground">
+                      {order.user.email}
+                    </TableCell>
+
+                    <TableCell className="font-semibold">
+                      Rs. {order.subTotal}
+                    </TableCell>
+
+                    <TableCell>
+                      <span
+                        className={`px-3 py-1 text-xs rounded-full font-medium ${getStatusStyle(
+                          order.status
+                        )}`}
+                      >
+                        {order.status}
+                      </span>
+                    </TableCell>
+
+                    <TableCell className="text-sm text-muted-foreground">
+                      {moment(order.createdAt).format("DD MMM YYYY")}
+                    </TableCell>
+
+                    <TableCell className="text-right">
+                      <select
+                        value={order.status}
+                        onChange={(e) =>
+                          updateOrderStatus(order._id, e.target.value)
+                        }
+                        className="px-3 py-2 border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                      </select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        ) : (
+          <div className="p-10 text-center text-muted-foreground">
+            No orders found.
+          </div>
+        )}
+      </div>
     </div>
   );
 };

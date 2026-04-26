@@ -49,7 +49,7 @@ const Home = () => {
             className="w-full"
           >
             <CarouselContent className="-ml-4">
-              {newProd.map((item) => (
+              {newProd.filter((item) => item.stock > 0).map((item) => (
                 <CarouselItem
                   key={item._id}
                   className="pl-4 basis-[85%] sm:basis-1/2 lg:basis-1/4"
@@ -61,7 +61,6 @@ const Home = () => {
               ))}
             </CarouselContent>
 
-            {/* SAME ARROWS */}
             <CarouselPrevious className="left-2 hidden sm:flex bg-white shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700" />
             <CarouselNext className="right-2 hidden sm:flex bg-white shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700" />
           </Carousel>
@@ -72,7 +71,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* EXTRA SECTION */}
       <section className="bg-white py-10 dark:bg-slate-900">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
           
