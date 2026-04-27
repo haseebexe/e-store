@@ -8,7 +8,7 @@ import { ProductProvider } from "./context/ProductContext";
 import { CartProvider } from "./context/CartContext";
 import { AddressProvider } from "./context/AddressContext";
 
-export const server = "http://localhost:5000";
+export const server = "https://e-store-fats.onrender.com";
 
 
 export const categories = [

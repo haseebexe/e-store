@@ -9,6 +9,7 @@ import cartRouter from "./routes/cart.js";
 import addressRouter from "./routes/address.js";
 import orderRouter from "./routes/order.js";
 import cors from 'cors';
+import axios from 'axios'
 
 dotenv.config();
 
@@ -21,6 +22,23 @@ cloudinary.v2.config({
 const port = process.env.PORT;
 
 const app = express();
+
+const url = `https://e-store-fats.onrender.com`;
+const interval = 30000;
+
+function reloadWebsite() {
+  axios
+    .get(url)
+    .then((response) => {
+      console.log("website reloded");
+    })
+    .catch((error) => {
+      console.error(`Error : ${error.message}`);
+    });
+}
+
+setInterval(reloadWebsite, interval);
+
 app.use(cors())
 
 app.use(express.json());
