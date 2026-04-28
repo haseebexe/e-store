@@ -17,6 +17,7 @@ import Orders from "./pages/Orders";
 import OrderPage from "./pages/OrderPage";
 import Dashboard from "./pages/AdminDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const { isAuth, loading, user } = useUserData();
@@ -29,6 +30,7 @@ function App() {
         <Loading />
       ) : (
         <BrowserRouter>
+          <ScrollToTop />
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />}></Route>
